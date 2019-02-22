@@ -10,19 +10,19 @@ extension SegmentButton {
     }
 }
 
-public class SegmentButton: UIButton {
-    public static let borderColor: UIColor = .silver
-    public static let borderWidth = 1.5 as CGFloat
+class SegmentButton: UIButton {
+    static let borderColor: UIColor = .silver
+    static let borderWidth = 1.5 as CGFloat
 
-    public var borderStyle: BorderStyle = .middle
+    var borderStyle: BorderStyle = .middle
 
-    public var isExpandable = false {
+    var isExpandable = false {
         didSet {
             setupExpandable()
         }
     }
 
-    public override var isSelected: Bool {
+    override var isSelected: Bool {
         didSet {
             updateSelected(isSelected)
         }
@@ -32,25 +32,25 @@ public class SegmentButton: UIButton {
     private var maskLayer = CAShapeLayer()
     private var selectedBackgroundColor: UIColor = .primaryBlue
 
-    public init(title: String) {
+    init(model: SegmentButtonModel) {
         super.init(frame: .zero)
-        setup(with: title)
+        setup(with: model)
     }
 
-    public required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public override func layoutSubviews() {
+    override func layoutSubviews() {
         super.layoutSubviews()
         drawBorder()
     }
 }
 
 private extension SegmentButton {
-    func setup(with title: String) {
+    func setup(with model: SegmentButtonModel) {
         titleLabel?.font = .title4
-        setTitle(title, for: .normal)
+        setTitle(model.title, for: .normal)
         setTitleColor(.spaceGray, for: .normal)
         setTitleColor(.milk, for: .selected)
         backgroundColor = .milk
@@ -61,6 +61,8 @@ private extension SegmentButton {
         borderLayer.fillColor = UIColor.clear.cgColor
         layer.addSublayer(borderLayer)
         layer.mask = maskLayer
+
+        isSelected = model.isSelected
     }
 
     func updateSelected(_ selected: Bool) {

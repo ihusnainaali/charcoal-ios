@@ -97,9 +97,15 @@ extension RootFilterViewController: UITableViewDataSource {
         case config.preferencesFilter:
             let cell = tableView.dequeue(CCInlineFilterCell.self, for: indexPath)
             cell.delegate = self
-            let segmentTitles = currentFilter.subfilters.map({ $0.subfilters.map({ $0.title }) })
+
+            let segmentModels = currentFilter.subfilters.map({
+                $0.subfilters.map({
+                    SegmentButtonModel(title: $0.title, isSelected: selectionStore.isSelected($0))
+                })
+            })
+
             let vertical = verticals?.first(where: { $0.isCurrent })
-            cell.configure(with: segmentTitles, vertical: vertical?.title)
+            cell.configure(with: segmentModels, vertical: vertical?.title)
             return cell
         default:
             let titles = selectionStore.titles(for: currentFilter)

@@ -15,7 +15,7 @@ class CCInlineFilterView: UIView {
 
     var vertical: String?
 
-    var segmentTitles: [[String]] = [] {
+    var segmentModels: [[SegmentButtonModel]] = [] {
         didSet {
             setupItems()
         }
@@ -91,13 +91,14 @@ private extension CCInlineFilterView {
         segments = []
 
         if let vertical = vertical {
-            let segment = Segment(titles: [vertical], isExpandable: true)
+            let verticalModel = SegmentButtonModel(title: vertical, isSelected: false)
+            let segment = Segment(models: [verticalModel], isExpandable: true)
             segment.addTarget(self, action: #selector(handleExpandedSegment(segment:)), for: .touchUpInside)
             segments.append(segment)
         }
 
-        for titles in segmentTitles {
-            let segment = Segment(titles: titles)
+        for models in segmentModels {
+            let segment = Segment(models: models)
             segment.addTarget(self, action: #selector(handleValueChanged(segment:)), for: .valueChanged)
             segments.append(segment)
         }

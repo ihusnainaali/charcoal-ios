@@ -19,17 +19,15 @@ class Segment: UIControl {
 
     // MARK: - Private properties
 
-    private let titles: [String]
     private var buttons: [SegmentButton] = []
     private var splitLines: [UIView] = []
 
     // MARK: - Setup
 
-    init(titles: [String], isExpandable: Bool = false) {
-        self.titles = titles
+    init(models: [SegmentButtonModel], isExpandable: Bool = false) {
         self.isExpandable = isExpandable
         super.init(frame: .zero)
-        setup(isExpandable: isExpandable)
+        setup(with: models, isExpandable: isExpandable)
     }
 
     public required init?(coder aDecoder: NSCoder) {
@@ -40,8 +38,8 @@ class Segment: UIControl {
 // MARK: - Private methods
 
 private extension Segment {
-    func setup(isExpandable: Bool) {
-        addButtons(isExpandable: isExpandable)
+    func setup(with models: [SegmentButtonModel], isExpandable: Bool) {
+        addButtons(with: models, isExpandable: isExpandable)
         addSplitLines()
         layoutButtonsAndLines()
     }
@@ -86,9 +84,9 @@ private extension Segment {
         }
     }
 
-    func addButtons(isExpandable: Bool) {
-        for title in titles {
-            let button = SegmentButton(title: title)
+    func addButtons(with models: [SegmentButtonModel], isExpandable: Bool) {
+        for model in models {
+            let button = SegmentButton(model: model)
             button.isExpandable = isExpandable
             button.addTarget(self, action: #selector(handleButton(sender:)), for: .touchUpInside)
             button.translatesAutoresizingMaskIntoConstraints = false
